@@ -1,0 +1,3 @@
+-pragrama esta em desenvolvimento, ira faz o controle de investimentos, armazena movimentações de compra e venda, recebimentos de dividendos.
+-para o desenvolvimento sera utilizado html, css, javascript para se conectar com o node como blackend, tera um banco
+de dados com mysql para fazer o armazenamento dos dados.

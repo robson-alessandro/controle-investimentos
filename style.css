@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Francois+One&family=Freeman&family=Jersey+25&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+:root{
+    --cor-fundo : #edeade;
+    --cor-borda : #adeada;
+    --fonte-titulo: "Freeman", sans-serif;
+    --fonte-secundaria:"Abel", sans-serif;
+
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: var(--cor-fundo);
+}
+
+.titulo_principal{
+    font-family: var(--fonte-titulo);
+    font-size: 50px;
+    text-align: center;
+}
+.painel_cadastro{
+    font-family: var(--fonte-secundaria);
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    gap: 3em;
+    margin: 3em;
+}
+
+.painel_registrar{
+    text-align: left;
+    display: block;
+    width: auto;
+    gap: 1em;
+    width: 20em;
+}
+
+li {
+    list-style-type: none;
+    margin: 0.5em 0;
+    
+}
+input{
+    width: 18em;
+    height: 1.5em;
+    border-radius: 5px;
+    border: 2px solid var(--cor-borda);
+    outline: 0;
+}
+button{
+    width: 8em;
+    background-color: #bdeadb;
+    border-radius: 10px;
+    border: 2px solid var(--cor-borda);
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="./frontend.js" defer></script>
+    <title>principal</title>
+</head>
+<body>
+    
+    <h1 class="titulo_principal">investimentos</h1>
+     <section class="painel_cadastro">
+        <form class="painel_registrar" id="registro_compra">
+            <h2 class="titulo_secundario">resgistrar compra</h2>
+            <ul>
+                <li>
+                    <label >digite o nome do investimento</label>
+                    <input type="text" id="nome_compra_investimento">
+                </li>
+                <li>
+                    <label>digite o tipo do investimento</label>
+                    <input type="text" id="tipo_compra_investimento">
+                </li>
+                <li>
+                    <label >digite a data da compra</label>
+                    <input type="date" id="data_compra_investimento" >
+                </li>
+                <li>
+                    <label >digite a quantidade ações compradas</label>
+                    <input type="number" id="quantidade_compra_investimento">
+                </li>
+                <li>
+                    <label >digite o valor total da compra</label>
+                    <input type="number" id="valor_compra_investimento">
+                </li>
+                <li>
+                    <button type="submit" id="botao_compra">salvar</button>
+                </li>
+            </ul>
+    
+        </form>
+        <form class="painel_registrar">
+            <h2 class="titulo_secundario">resgistrar venda</h2>
+            <ul>
+                <li>
+                    <label for="">digite o nome do ativo</label>
+                    <input type="text" >
+                </li>
+                <li>
+                    <label for="">digite a data da venda</label>
+                    <input type="date" >
+                </li>
+                <li>
+                    <label for="">digite a quantidade</label>
+                    <input type="number" >
+                </li>
+                <li>
+                    <label for="">digite o valor da venda</label>
+                    <input type="number" >
+                </li>
+                <li>
+                    <button>salvar</button>
+                </li>
+            </ul>
+    
+        </form>
+        <form class="painel_registrar">
+            <h2 class="titulo_secundario">resgistrar dividendo</h2>
+            <ul>
+                <li>
+                    <label for="">digite o nome do ativo</label>
+                    <input type="text">
+                </li>
+                <li>
+                    <label for="">digite a data de recebimento</label>
+                    <input type="date" >
+                </li>
+                <li>
+                    <label for="">digite o valor recebido</label>
+                    <input type="number" >
+                </li>
+                <li>
+                    <button>salvar</button>
+                </li>
+            </ul>
+    
+        </form>
+     </section>
+ 
+    <section class="painel_mostrar_investimentos">
+        <h2>mostrar investimentos </h2>
+
+    </section>
+    
+</body>
+</html>
