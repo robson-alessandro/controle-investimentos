@@ -15,6 +15,10 @@
 body{
     background-color: var(--cor-fundo);
 }
+.botao_radio{
+    width: auto;
+    height: auto;
+}
 
 .titulo_principal{
     font-family: var(--fonte-titulo);

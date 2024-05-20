@@ -10,7 +10,8 @@ botaoCompra.addEventListener('click',(event)=>{
     const dataInvestimento = document.getElementById('data_compra_investimento').value
     const quantidadeInvestimento = document.getElementById('quantidade_compra_investimento').value
     const valorCompra = document.getElementById('valor_compra_investimento').value
+    const primeiraCompra = document.getElementById('primeira_compra')
     console.log(`${nomeInvestimento}-${tipoInvestimento}-${dataInvestimento}-${quantidadeInvestimento}-${valorCompra
 
-    }`)
+    }-${primeiraCompra.checked}`)
 })
