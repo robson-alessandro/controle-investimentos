@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/axios@0.21.4/dist/axios.min.js"></script>
     <script type="module" src="./frontend.js" defer></script>
     <title>principal</title>
 </head>
@@ -11,7 +12,7 @@
     
     <h1 class="titulo_principal">investimentos</h1>
      <section class="painel_cadastro">
-        <form class="painel_registrar" id="registro_compra">
+        <form class="painel_registrar" >
             <h2 class="titulo_secundario">resgistrar compra</h2>
             <ul>
                 <li>
@@ -49,22 +50,22 @@
             <ul>
                 <li>
                     <label for="">digite o nome do ativo</label>
-                    <input type="text" >
+                    <input type="text" id="nome_venda_investimento">
                 </li>
                 <li>
                     <label for="">digite a data da venda</label>
-                    <input type="date" >
+                    <input type="date" id="data_venda_investimento">
                 </li>
                 <li>
                     <label for="">digite a quantidade</label>
-                    <input type="number" >
+                    <input type="number" id="quantidade_venda_investimento">
                 </li>
                 <li>
                     <label for="">digite o valor da venda</label>
-                    <input type="number" >
+                    <input type="number" id="valor_venda_investimento" >
                 </li>
                 <li>
-                    <button>salvar</button>
+                    <button id="botao_venda">salvar</button>
                 </li>
             </ul>
     
@@ -74,18 +75,18 @@
             <ul>
                 <li>
                     <label for="">digite o nome do ativo</label>
-                    <input type="text">
+                    <input type="text" id="nome_dividendo_investimento">
                 </li>
                 <li>
                     <label for="">digite a data de recebimento</label>
-                    <input type="date" >
+                    <input type="date" id="data_dividendo_investimento" >
                 </li>
                 <li>
                     <label for="">digite o valor recebido</label>
-                    <input type="number" >
+                    <input type="number" id="valor_dividendo_investimento">
                 </li>
                 <li>
-                    <button>salvar</button>
+                    <button id="botao_dividendo">salvar</button>
                 </li>
             </ul>
     
