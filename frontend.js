@@ -47,7 +47,7 @@ botaoCompra.addEventListener('click',(event)=>{
     const compra = new Object(Compras)
     compra.init(nomeInvestimentoCompra,tipoInvestimento,dataInvestimento,quantidadeInvestimento,valorCompra,primeiraCompra)
     
-    chamarApi(compra)
+    chamarApi(compra,'compra')
     
 
 })
@@ -62,7 +62,7 @@ botaoVenda.addEventListener('click' ,(event)=>{
 
     const venda = new Object(Vendas)
     venda.init(nomeInvestimentoVenda,dataVenda,quantidadeVenda,valorVenda);
-    console.log(venda)
+    chamarApi(venda, 'venda')
 })
 
 // função para pegar os valores do formulario de dividendo
@@ -76,13 +76,11 @@ botaoDividendo.addEventListener('click',(evet) =>{
     const dividendo = new Object(Dividendos)
     dividendo.init(nomeInvestimentoDividendo,dataDividendo,valorDividendo)
 
-    console.log(dividendo.data)
+    chamarApi(dividendo,'dividendo')
 })
 
 
 //conectar com backend
-
-
 async function getcontent(){
     try{
         const resposta = await fetch('http://localhost:4567/')
@@ -94,21 +92,14 @@ async function getcontent(){
 }
 getcontent()
 
-
-function chamarApi(dados){
+// função que manda os dados para o backend parametros: dados = os dados enviados ao backend para salva,
+// movimentacao = qual o tipo de movimentação feita(compra,venda ou dividendos)
+function chamarApi(dados,movimentacao){
     
-    axios.post('http://localhost:4567/compra',dados)
+    axios.post(`http://localhost:4567/${movimentacao}`,dados)
     .then(response => {
-      alert(JSON.stringify(response.data))
+      console.log(JSON.stringify(response.data))
       
     })
     .catch(error => console.error(error));
-    
 }
-
-
-
-
-
-
-

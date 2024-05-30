@@ -35,11 +35,13 @@ body{
 }
 
 .painel_registrar{
-    text-align: left;
+    text-align:center;
     display: block;
     width: auto;
     gap: 1em;
     width: 20em;
+    background-color: rgb(253, 254, 255);
+    border-radius: 10px;
 }
 
 li {
@@ -50,12 +52,13 @@ li {
 input{
     width: 18em;
     height: 1.5em;
-    border-radius: 5px;
-    border: 2px solid var(--cor-borda);
+    border: none;
+    border-bottom: 2px solid  black; 
     outline: 0;
 }
 button{
-    width: 8em;
+    width: 9em;
+    height: 2em;
     background-color: #bdeadb;
     border-radius: 10px;
     border: 2px solid var(--cor-borda);
