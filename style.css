@@ -50,11 +50,13 @@ li {
     
 }
 input{
+    text-align: center;
     width: 18em;
     height: 1.5em;
     border: none;
     border-bottom: 2px solid  black; 
     outline: 0;
+    
 }
 button{
     width: 9em;
@@ -62,4 +64,9 @@ button{
     background-color: #bdeadb;
     border-radius: 10px;
     border: 2px solid var(--cor-borda);
+    cursor: pointer;
+}
+
+button:hover{
+    transform: scale(1.2);
 }

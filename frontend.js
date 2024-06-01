@@ -1,3 +1,5 @@
+
+
 const botaoCompra = document.querySelector('#botao_compra');
 const botaoVenda = document.querySelector('#botao_venda');
 const botaoDividendo = document.querySelector('#botao_dividendo');
@@ -34,7 +36,7 @@ const Dividendos = {
 }
 
 // função para pegar os valores do formulario de compra
-botaoCompra.addEventListener('click',(event)=>{
+botaoCompra.addEventListener('click',async (event)=>{
     event.preventDefault();
 
     const nomeInvestimentoCompra = document.getElementById('nome_compra_investimento').value
@@ -46,14 +48,39 @@ botaoCompra.addEventListener('click',(event)=>{
 
     const compra = new Object(Compras)
     compra.init(nomeInvestimentoCompra,tipoInvestimento,dataInvestimento,quantidadeInvestimento,valorCompra,primeiraCompra)
-    
-    chamarApi(compra,'compra')
-    
+    if(primeiraCompra){
+        let erro = false
+        await axios.post(`http://localhost:4567/primeiracompra`,compra)
+        .then(({data}) =>  {
+            if(data.sqlMessage == undefined){
+                alert('salvo')
+            }else{
+                alert(`${data.sqlMessage}`)
+                erro=true
+            }
+        })    
+        
+        if(!erro){
+            await axios.post(`http://localhost:4567/compra`,compra)
+            .then(({data}) =>  alert(data.sqlMessage == undefined ?`compra salva`:`${data.sqlMessage}`))
+        }
+         
+    }else{
+        await axios.post(`http://localhost:4567/compra`,compra)
+        .then(({data}) =>  alert(data.sqlMessage == undefined ?`compra salva`:`${data.sqlMessage}`))
+
+    }
+
+    nomeInvestimentoCompra.value = ''
+    tipoInvestimento.value = ''
+    dataInvestimento.value = ''
+    quantidadeInvestimento.value = ''
+    valorCompra.value = ''
 
 })
 
 // função para pegar os valores do formulario de venda
-botaoVenda.addEventListener('click' ,(event)=>{
+botaoVenda.addEventListener('click' ,async (event)=>{
     event.preventDefault();
     const nomeInvestimentoVenda = document.getElementById('nome_venda_investimento').value;
     const dataVenda = document.getElementById('data_venda_investimento').value;
@@ -62,11 +89,13 @@ botaoVenda.addEventListener('click' ,(event)=>{
 
     const venda = new Object(Vendas)
     venda.init(nomeInvestimentoVenda,dataVenda,quantidadeVenda,valorVenda);
-    chamarApi(venda, 'venda')
+
+    await axios.post(`http://localhost:4567/venda`,venda)
+        .then(({data}) =>  alert(data.sqlMessage == undefined ?'movimentação de venda salva':`${data.sqlMessage}`))
 })
 
 // função para pegar os valores do formulario de dividendo
-botaoDividendo.addEventListener('click',(evet) =>{
+botaoDividendo.addEventListener('click',async(evet) =>{
     evet.preventDefault();
 
     const nomeInvestimentoDividendo = document.getElementById('nome_dividendo_investimento').value
@@ -76,7 +105,8 @@ botaoDividendo.addEventListener('click',(evet) =>{
     const dividendo = new Object(Dividendos)
     dividendo.init(nomeInvestimentoDividendo,dataDividendo,valorDividendo)
 
-    chamarApi(dividendo,'dividendo')
+    await axios.post(`http://localhost:4567/dividendo`,dividendo)
+    .then(({data}) =>  alert(data.sqlMessage == undefined ?'dividendo salvo':`${data.sqlMessage}`))
 })
 
 
@@ -92,14 +122,5 @@ async function getcontent(){
 }
 getcontent()
 
-// função que manda os dados para o backend parametros: dados = os dados enviados ao backend para salva,
-// movimentacao = qual o tipo de movimentação feita(compra,venda ou dividendos)
-function chamarApi(dados,movimentacao){
-    
-    axios.post(`http://localhost:4567/${movimentacao}`,dados)
-    .then(response => {
-      console.log(JSON.stringify(response.data))
-      
-    })
-    .catch(error => console.error(error));
-}
+
+

@@ -1,6 +1,15 @@
 const cors = require('cors')
 const express = require('express')
 const app = express()
+const mysql = require ('mysql2')
+
+const conennection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database: 'investimento'
+
+});
 
 app.use(cors())
 app.listen('4567')
@@ -14,23 +23,48 @@ app.get('/',(req, res)=>{
 
 
 
+//recebe os dados da movimentação de compra caso seja a primeira compra para cadastrar na tabela de investimentos
+app.post('/primeiracompra',(req,res)=>{
+    conennection.query("INSERT INTO investimentos VALUE (?,?,?)",[req.body.nome, req.body.tipo,
+        req.body.data],(err)=>{
+            if(err){
+                return res.json(err)
+            }
+            return res.json('passou')
+        })
+})
+
 //recebe os dados da movimentação de compra
 app.post('/compra',(req,res)=>{
-    console.log(req.body)
-    res.json('dados compra salvo')
+    conennection.query("INSERT INTO movimentacoes VALUE (?,?,?,?,?)",[req.body.nome, req.body.data, 
+        req.body.quantidade, req.body.valor, 'compra'],(err)=>{
+        if(err){
+            return res.json(err)
+        }
+        
+        return res.json('passou')
+    })
 })
 
 //recebe os dados da movimentação de venda
 app.post('/venda',(req ,res) =>{
-    console.log(req.body)
-    res.json('dados venda salvo')
+    conennection.query("INSERT INTO movimentacoes value(?,?,?,?,?)",[req.body.nome, req.body.data, req.body.quantidade, req.body.valor,'venda'],
+    (err)=>{
+        if(err){
+            return res.json(err)
+        }
+        return res.json('passou')
+    })
 })
 
 //recebe os dados da movimentação de dividendo
 app.post('/dividendo',(req,res)=>{
-    console.log(req.body)
-    res.json('dados dividendo salvo')
+    conennection.query("INSERT INTO dividendos VALUE (?,?,?)",[req.body.nome, req.body.data, req.body.valor],
+    (err)=>{
+        if(err){
+            return res.json(err)
+        }
+        return res.json('passou')
+    })
+    
 })
-
-
-
