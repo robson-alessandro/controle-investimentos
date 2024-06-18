@@ -71,14 +71,20 @@ button:hover{
     transform: scale(1.2);
 }
 .painel_mostrar_investimentos{
+    font-family: var(--fonte-secundaria);
     display: flex;
     gap: 2em;
     text-align: center;
-    padding: 5em;
+    padding: 2em 5em ;
+}
+table{
+    background-color: rgb(253, 254, 255);
+    border-radius: 10px;
+    padding: 3px;
 }
 
-table, th, td{
-    border: 1px solid black;
-    padding: 3px;
-    
+td{
+    border-bottom: 1px solid black;
+    padding: 2px 5px;
 }
+

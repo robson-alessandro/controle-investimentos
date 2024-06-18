@@ -63,7 +63,7 @@ app.post('/dividendo',(req,res)=>{
 
 // recebe o pedido do frontend para retornar a lista com todos os investimentos
 app.get('/dados',(req, res)=>{
-    conennection.query("SELECT * FROM investimentos ORDER BY data_compra",function(error,result,field){
+    conennection.query("SELECT * FROM investimentos ORDER BY nome",function(error,result,field){
         
         return res.json(result)
         
@@ -73,7 +73,7 @@ app.get('/dados',(req, res)=>{
 
 // recebe o pedido do frontend para retornar a lista com todos os dividendos
 app.get('/dividendos',(req,res)=>{
-    conennection.query("SELECT * FROM dividendos ORDER BY data_dividendo",function(error,result,field){
+    conennection.query("SELECT * FROM dividendos ORDER BY nome",function(error,result,field){
         return res.json(result)
     })
 })
