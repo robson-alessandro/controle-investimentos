@@ -15,14 +15,6 @@ app.use(cors())
 app.listen('4567')
 app.use(express.json());
 
-
-app.get('/',(req, res)=>{
-    
-    return res.json({message:'ok'})
-})
-
-
-
 //recebe os dados da movimentação de compra caso seja a primeira compra para cadastrar na tabela de investimentos
 app.post('/primeiracompra',(req,res)=>{
     conennection.query("INSERT INTO investimentos VALUE (?,?,?)",[req.body.nome, req.body.tipo,
@@ -77,6 +69,13 @@ app.get('/dados',(req, res)=>{
         
     })
     
+})
+
+// recebe o pedido do frontend para retornar a lista com todos os dividendos
+app.get('/dividendos',(req,res)=>{
+    conennection.query("SELECT * FROM dividendos ORDER BY data_dividendo",function(error,result,field){
+        return res.json(result)
+    })
 })
 
 

@@ -2,6 +2,9 @@ const botaoCompra = document.querySelector('#botao_compra');
 const botaoVenda = document.querySelector('#botao_venda');
 const botaoDividendo = document.querySelector('#botao_dividendo');
 const tabelaTodosInvs = document.querySelector('.tabela_todos_investimentos')
+const tabelaDividendos = document.querySelector('.tabela_dividendos')
+
+
 
 
 //criar os objetos para armazenar os dados vindos dos formularios
@@ -136,41 +139,85 @@ function formatarData(data){
 
 }
 
+function somarValores(nome,lista){
+    let total = 0
+    lista.forEach(element =>{
+        
+        if(element['nome'] == nome){
+            total += parseFloat(element['valor'])
+        }
+    })
+
+    return total
+
+}
+
 // retorna os investimentos no banco de dados e os coloca em um tabela e apresenta eles no html
 async function consultaSql(){
+    
     let dados
     dados=await fetch('http://localhost:4567/dados')
     dados = await dados.json()
+    
 
     dados.forEach(element => {
         
         let linha = document.createElement('tr')
-        for(let i=0 ; i<3; i++){
-            let coluna = document.createElement('td')
-            linha.appendChild(coluna)
-            switch(i){
-                case 0 :
-                    coluna.innerHTML=element['nome']
-                    break
-                case 1:
-                    coluna.innerHTML = element['tipo']
-                    break
-                case 2:
-                    let dataFormatada = formatarData(element['data_compra'])
-                    coluna.innerHTML = dataFormatada
-                    break
-                default:
-                    break
-            }
-        }
+        let coluna1 = document.createElement('td')
+        coluna1.innerHTML=element['nome']
+        linha.appendChild(coluna1)
+
+        let coluna2 = document.createElement('td')
+        coluna2.innerHTML = element['tipo']
+        linha.appendChild(coluna2)
+
+        let coluna3 = document.createElement('td')
+        coluna3.innerHTML =  formatarData(element['data_compra'])
+        linha.appendChild(coluna3)
+        
         tabelaTodosInvs.appendChild(linha)
     
     });
     
     
 }
-getcontent()
+// faz o pedido ao backend para retornar os valores do dividendos
+
+async function consultarDividendos(){
+    let listaInvestimento = []
+    let dados 
+    dados = await fetch ('http://localhost:4567/dividendos')
+    dados = await dados.json()
+    console.log(dados)
+
+    dados.forEach(element =>{
+        if(!listaInvestimento.includes(element['nome'])){
+            let linha = document.createElement('tr')
+        
+            let coluna1 = document.createElement('td')
+            coluna1.innerHTML = element['nome']
+            linha.appendChild(coluna1)
+
+            let coluna2 = document.createElement('td')
+            coluna2.innerHTML =  formatarData(element['data_dividendo'])
+            linha.appendChild(coluna2)
+
+            let coluna3 = document.createElement('td')
+            coluna3.innerHTML = somarValores(element['nome'],dados)
+            linha.appendChild(coluna3)
+
+            listaInvestimento.push(element['nome'])
+
+            tabelaDividendos.appendChild(linha) 
+        }
+        
+    })
+
+
+}
+
 consultaSql()
+consultarDividendos()
 
 
 
