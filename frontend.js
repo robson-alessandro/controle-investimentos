@@ -3,6 +3,7 @@ const botaoVenda = document.querySelector('#botao_venda');
 const botaoDividendo = document.querySelector('#botao_dividendo');
 const tabelaTodosInvs = document.querySelector('.tabela_todos_investimentos')
 const tabelaDividendos = document.querySelector('.tabela_dividendos')
+const tabelaQuatidadeInvestimento = document.querySelector('.tabela_quantidade')
 
 
 
@@ -131,7 +132,7 @@ async function getcontent(){
         console.error(error)
     }
 }
-
+//recebe a data do banco de dados e retorna ela formatada
 function formatarData(data){
     let novaData=data.split('T')
     novaData = ` ${novaData[0][8]+novaData[0][9]+'/'+novaData[0][5]+novaData[0][6]+'/'+novaData[0][0]+novaData[0][1]+novaData[0][2]+novaData[0][3]}`
@@ -139,6 +140,7 @@ function formatarData(data){
 
 }
 
+//recebe o nome do investimento e a lista de investimentos, faz a soma de todos os dividendos e retorna o total
 function somarValores(nome,lista){
     let total = 0
     lista.forEach(element =>{
@@ -181,14 +183,13 @@ async function consultaSql(){
     
     
 }
-// faz o pedido ao backend para retornar os valores do dividendos
 
+// faz o pedido ao backend para retornar os valores do dividendos
 async function consultarDividendos(){
     let listaInvestimento = []
     let dados 
     dados = await fetch ('http://localhost:4567/dividendos')
     dados = await dados.json()
-    console.log(dados)
 
     dados.forEach(element =>{
         if(!listaInvestimento.includes(element['nome'])){
@@ -215,9 +216,54 @@ async function consultarDividendos(){
 
 
 }
+async function consultarQuantidadesInvestimentos(){
+    let dados
+    let listaInvestimentos = []
+    dados = await fetch('http://localhost:4567/movimentacao')
+    dados = await dados.json()
 
+    dados.forEach(element=>{
+        let totalInventimentos=0
+        let totalQuantInvestimento=0
+        if(!listaInvestimentos.includes(element['nome'])){
+            listaInvestimentos.push(element['nome'])
+            dados.forEach(valor=>{
+                if(valor['nome']==element['nome']){
+                    if(element['tipo'] == 'compra'){
+                        totalInventimentos +=element['valor']
+                        totalQuantInvestimento += element['quantidade']
+                    }else{
+                        totalInventimentos -=element['valor']
+                        totalQuantInvestimento -= element['quantidade']
+                    }
+                }
+            
+            })
+
+            let linha = document.createElement('tr')
+
+            let coluna1 = document.createElement('td')
+            coluna1.innerHTML=element['nome']
+            linha.appendChild(coluna1)
+
+            let coluna2 = document.createElement('td')
+            coluna2.innerHTML=totalQuantInvestimento
+            linha.appendChild(coluna2)
+
+            let coluna3 = document.createElement('td')
+            coluna3.innerHTML=totalInventimentos
+            linha.appendChild(coluna3)
+
+            tabelaQuatidadeInvestimento.appendChild(linha)   
+        }
+    
+    })
+    
+
+}
 consultaSql()
 consultarDividendos()
+consultarQuantidadesInvestimentos()
 
 
 

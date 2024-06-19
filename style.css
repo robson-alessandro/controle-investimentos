@@ -5,7 +5,6 @@
     --cor-borda : #adeada;
     --fonte-titulo: "Freeman", sans-serif;
     --fonte-secundaria:"Abel", sans-serif;
-
 }
 
 *{
@@ -76,11 +75,13 @@ button:hover{
     gap: 2em;
     text-align: center;
     padding: 2em 5em ;
+    width: auto;
 }
 table{
     background-color: rgb(253, 254, 255);
     border-radius: 10px;
     padding: 3px;
+    width: 100%;
 }
 
 td{
