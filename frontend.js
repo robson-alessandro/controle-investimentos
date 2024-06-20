@@ -5,10 +5,6 @@ const tabelaTodosInvs = document.querySelector('.tabela_todos_investimentos')
 const tabelaDividendos = document.querySelector('.tabela_dividendos')
 const tabelaQuatidadeInvestimento = document.querySelector('.tabela_quantidade')
 
-
-
-
-
 //criar os objetos para armazenar os dados vindos dos formularios
 
 const Compras = {
@@ -43,8 +39,7 @@ const Dividendos = {
 botaoCompra.addEventListener('click',async (event)=>{
     event.preventDefault();
 
-    const nomeInvestimentoCompra = document.getElementById('nome_compra_investimento')
-    
+    const nomeInvestimentoCompra = document.getElementById('nome_compra_investimento') 
     const dataInvestimento = document.getElementById('data_compra_investimento')
     const quantidadeInvestimento = document.getElementById('quantidade_compra_investimento')
     const valorCompra = document.getElementById('valor_compra_investimento')
@@ -63,7 +58,6 @@ botaoCompra.addEventListener('click',async (event)=>{
         console.log(botaoRadioFundoInv.checked)
         tipoInvestimento = 'fundo imobiliario' 
     }
-    
 
     const compra = new Object(Compras)
     compra.init(nomeInvestimentoCompra.value.toUpperCase(),tipoInvestimento,dataInvestimento.value,quantidadeInvestimento.value,valorCompra.value)
