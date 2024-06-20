@@ -8,6 +8,7 @@ const tabelaQuatidadeInvestimento = document.querySelector('.tabela_quantidade')
 
 
 
+
 //criar os objetos para armazenar os dados vindos dos formularios
 
 const Compras = {
@@ -43,14 +44,29 @@ botaoCompra.addEventListener('click',async (event)=>{
     event.preventDefault();
 
     const nomeInvestimentoCompra = document.getElementById('nome_compra_investimento')
-    const tipoInvestimento = document.getElementById('tipo_compra_investimento')
+    
     const dataInvestimento = document.getElementById('data_compra_investimento')
     const quantidadeInvestimento = document.getElementById('quantidade_compra_investimento')
     const valorCompra = document.getElementById('valor_compra_investimento')
     const primeiraCompra = document.getElementById('primeira_compra')
+    const botaoRadioAcao = document.getElementById('acao')
+    const botaoRadioFundoInv = document.getElementById('fundo_imobiliario')
+
+    let  tipoInvestimento
+
+    if(botaoRadioAcao.checked){
+        console.log(botaoRadioAcao.checked)
+        tipoInvestimento = 'ação'
+        
+    }
+    if(botaoRadioFundoInv.checked){
+        console.log(botaoRadioFundoInv.checked)
+        tipoInvestimento = 'fundo imobiliario' 
+    }
+    
 
     const compra = new Object(Compras)
-    compra.init(nomeInvestimentoCompra.value.toUpperCase(),tipoInvestimento.value,dataInvestimento.value,quantidadeInvestimento.value,valorCompra.value)
+    compra.init(nomeInvestimentoCompra.value.toUpperCase(),tipoInvestimento,dataInvestimento.value,quantidadeInvestimento.value,valorCompra.value)
 
     if(primeiraCompra.checked){
         let erro = false
@@ -76,8 +92,9 @@ botaoCompra.addEventListener('click',async (event)=>{
     }
     
     nomeInvestimentoCompra.value = ''
-    tipoInvestimento.value = ''
     dataInvestimento.value = ''
+    botaoRadioAcao.checked = false
+    botaoRadioFundoInv.checked = false
     quantidadeInvestimento.value = ''
     valorCompra.value = ''
     primeiraCompra.checked = false
@@ -264,6 +281,7 @@ async function consultarQuantidadesInvestimentos(){
 consultaSql()
 consultarDividendos()
 consultarQuantidadesInvestimentos()
+
 
 
 
