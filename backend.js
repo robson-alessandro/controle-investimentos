@@ -78,7 +78,6 @@ app.get('/dividendos',(req,res)=>{
     })
 })
 
-
 //recebe o pedido do frontend para retornar todas as movimentações 
 app.get('/movimentacao',(req,res)=>{
     conennection.query("SELECT * FROM movimentacoes",function(error,result,field){

@@ -1,12 +1,9 @@
 const botaoCompra = document.querySelector('#botao_compra');
 const botaoVenda = document.querySelector('#botao_venda');
 const botaoDividendo = document.querySelector('#botao_dividendo');
-const tabelaTodosInvs = document.querySelector('.tabela_todos_investimentos')
-const tabelaDividendos = document.querySelector('.tabela_dividendos')
-const tabelaQuatidadeInvestimento = document.querySelector('.tabela_quantidade')
+const tabelaInvestimentos = document.querySelector('.tabela_investimentos')
 
 //criar os objetos para armazenar os dados vindos dos formularios
-
 const Compras = {
     init:function(nome,tipo,data,quantidade,valor,primeiraCompra){
         this.nome = nome
@@ -35,9 +32,21 @@ const Dividendos = {
     }
 }
 
+const Investimento = {
+    init:function(nome,tipo, dataCompra, totalDividendos, quantidade, totalInvestido){
+        this.nome = nome
+        this.tipo = tipo
+        this.dataCompra = dataCompra
+        this.totalDividendos = totalDividendos
+        this.quantidade = quantidade
+        this.totalInvestido = totalInvestido
+    }
+}
+
 // função para pegar os valores do formulario de compra
 botaoCompra.addEventListener('click',async (event)=>{
     event.preventDefault();
+    let  tipoInvestimento
 
     const nomeInvestimentoCompra = document.getElementById('nome_compra_investimento') 
     const dataInvestimento = document.getElementById('data_compra_investimento')
@@ -46,8 +55,6 @@ botaoCompra.addEventListener('click',async (event)=>{
     const primeiraCompra = document.getElementById('primeira_compra')
     const botaoRadioAcao = document.getElementById('acao')
     const botaoRadioFundoInv = document.getElementById('fundo_imobiliario')
-
-    let  tipoInvestimento
 
     if(botaoRadioAcao.checked){
         console.log(botaoRadioAcao.checked)
@@ -133,16 +140,6 @@ botaoDividendo.addEventListener('click',async(evet) =>{
     valorDividendo.value = ''
 })
 
-//conectar com backend
-async function getcontent(){
-    try{
-        const resposta = await fetch('http://localhost:4567/')
-        const dados = await resposta.json()
-        console.log(dados)
-    }catch(error){
-        console.error(error)
-    }
-}
 //recebe a data do banco de dados e retorna ela formatada
 function formatarData(data){
     let novaData=data.split('T')
@@ -152,129 +149,102 @@ function formatarData(data){
 }
 
 //recebe o nome do investimento e a lista de investimentos, faz a soma de todos os dividendos e retorna o total
-function somarValores(nome,lista){
+function somarValoresDividendos(nome,lista){
     let total = 0
     lista.forEach(element =>{
         
-        if(element['nome'] == nome){
+        if( element['nome'] == nome ){
             total += parseFloat(element['valor'])
         }
     })
 
     return total
-
 }
 
-// retorna os investimentos no banco de dados e os coloca em um tabela e apresenta eles no html
+//recebe o nome do investimento e a lista de investimentos, faz a soma de todas as quantidades investido e total aplicado e retorna uma lista com os dois valores
+function pegarQuantidadeTotalInvestido(nome, lista){
+    let totalInventimentos=0
+    let totalQuantInvestimento=0
+    let listaValores=[]
+
+    lista.forEach(element=>{
+        
+        if( element['nome'] == nome ){
+            if(element['tipo'] == 'compra'){
+                totalInventimentos +=element['valor']
+                totalQuantInvestimento += element['quantidade']
+            }else{
+                totalInventimentos -=element['valor']
+                totalQuantInvestimento -= element['quantidade']
+            }
+        }
+    })
+
+    listaValores.push(totalQuantInvestimento)
+    listaValores.push(totalInventimentos)
+    
+    return listaValores
+}
+
+// retorna os investimentos no banco de dados e os coloca em um tabela e apresenta eles no html(nome,tipo,data compra, valor dos dividendos, quantidade de cada investimento, valor total)
 async function consultaSql(){
     
-    let dados
-    dados=await fetch('http://localhost:4567/dados')
-    dados = await dados.json()
-    
+    let dadosInvestimento
+    dadosInvestimento=await fetch('http://localhost:4567/dados')
+    dadosInvestimento = await dadosInvestimento.json()
 
-    dados.forEach(element => {
-        
+    let dadosDividendos 
+    dadosDividendos = await fetch ('http://localhost:4567/dividendos')
+    dadosDividendos = await dadosDividendos.json()
+
+    let dadosQuantidade
+    dadosQuantidade = await fetch('http://localhost:4567/movimentacao')
+    dadosQuantidade = await dadosQuantidade.json()
+    console.log(dadosDividendos)
+    console.log(dadosQuantidade)
+    console.log(dadosInvestimento)
+
+    dadosInvestimento.forEach(element => {
+        let totalQuantTotalInvestido= pegarQuantidadeTotalInvestido(element['nome'],dadosQuantidade)
+
+        let investimento = new Object(Investimento)
+        investimento.init(element['nome'], element['tipo'], formatarData(element['data_compra']), somarValoresDividendos(element['nome'],dadosDividendos),
+        totalQuantTotalInvestido[0], totalQuantTotalInvestido[1])
+
         let linha = document.createElement('tr')
+
         let coluna1 = document.createElement('td')
-        coluna1.innerHTML=element['nome']
+        coluna1.innerHTML= investimento.nome
         linha.appendChild(coluna1)
 
         let coluna2 = document.createElement('td')
-        coluna2.innerHTML = element['tipo']
+        coluna2.innerHTML = investimento.tipo
         linha.appendChild(coluna2)
 
         let coluna3 = document.createElement('td')
-        coluna3.innerHTML =  formatarData(element['data_compra'])
+        coluna3.innerHTML =  investimento.dataCompra
         linha.appendChild(coluna3)
-        
-        tabelaTodosInvs.appendChild(linha)
+
+        let coluna4 = document.createElement('td')
+        coluna4.innerHTML = investimento.totalDividendos
+        linha.appendChild(coluna4)
+
+        let coluna5 = document.createElement('td')
+        coluna5.innerHTML = investimento.quantidade
+        linha.appendChild(coluna5)
+
+        let coluna6 = document.createElement('td')
+        coluna6.innerHTML = investimento.totalInvestido
+        linha.appendChild(coluna6)
+    
+        tabelaInvestimentos.appendChild(linha)
     
     });
     
     
 }
-
-// faz o pedido ao backend para retornar os valores do dividendos
-async function consultarDividendos(){
-    let listaInvestimento = []
-    let dados 
-    dados = await fetch ('http://localhost:4567/dividendos')
-    dados = await dados.json()
-
-    dados.forEach(element =>{
-        if(!listaInvestimento.includes(element['nome'])){
-            let linha = document.createElement('tr')
-        
-            let coluna1 = document.createElement('td')
-            coluna1.innerHTML = element['nome']
-            linha.appendChild(coluna1)
-
-            let coluna2 = document.createElement('td')
-            coluna2.innerHTML =  formatarData(element['data_dividendo'])
-            linha.appendChild(coluna2)
-
-            let coluna3 = document.createElement('td')
-            coluna3.innerHTML = somarValores(element['nome'],dados)
-            linha.appendChild(coluna3)
-
-            listaInvestimento.push(element['nome'])
-
-            tabelaDividendos.appendChild(linha) 
-        }
-        
-    })
-
-
-}
-async function consultarQuantidadesInvestimentos(){
-    let dados
-    let listaInvestimentos = []
-    dados = await fetch('http://localhost:4567/movimentacao')
-    dados = await dados.json()
-
-    dados.forEach(element=>{
-        let totalInventimentos=0
-        let totalQuantInvestimento=0
-        if(!listaInvestimentos.includes(element['nome'])){
-            listaInvestimentos.push(element['nome'])
-            dados.forEach(valor=>{
-                if(valor['nome']==element['nome']){
-                    if(element['tipo'] == 'compra'){
-                        totalInventimentos +=element['valor']
-                        totalQuantInvestimento += element['quantidade']
-                    }else{
-                        totalInventimentos -=element['valor']
-                        totalQuantInvestimento -= element['quantidade']
-                    }
-                }
-            
-            })
-
-            let linha = document.createElement('tr')
-
-            let coluna1 = document.createElement('td')
-            coluna1.innerHTML=element['nome']
-            linha.appendChild(coluna1)
-
-            let coluna2 = document.createElement('td')
-            coluna2.innerHTML=totalQuantInvestimento
-            linha.appendChild(coluna2)
-
-            let coluna3 = document.createElement('td')
-            coluna3.innerHTML=totalInventimentos
-            linha.appendChild(coluna3)
-
-            tabelaQuatidadeInvestimento.appendChild(linha)   
-        }
-    
-    })
-    
-
-}
 consultaSql()
-consultarDividendos()
-consultarQuantidadesInvestimentos()
+
 
 
 
