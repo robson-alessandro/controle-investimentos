@@ -1,3 +1,5 @@
+
+
 const botaoCompra = document.querySelector('#botao_compra');
 const botaoVenda = document.querySelector('#botao_venda');
 const botaoDividendo = document.querySelector('#botao_dividendo');
@@ -200,9 +202,6 @@ async function consultaSql(){
     let dadosQuantidade
     dadosQuantidade = await fetch('http://localhost:4567/movimentacao')
     dadosQuantidade = await dadosQuantidade.json()
-    console.log(dadosDividendos)
-    console.log(dadosQuantidade)
-    console.log(dadosInvestimento)
 
     dadosInvestimento.forEach(element => {
         let totalQuantTotalInvestido= pegarQuantidadeTotalInvestido(element['nome'],dadosQuantidade)
@@ -226,7 +225,7 @@ async function consultaSql(){
         linha.appendChild(coluna3)
 
         let coluna4 = document.createElement('td')
-        coluna4.innerHTML = investimento.totalDividendos
+        coluna4.innerHTML = investimento.totalDividendos.toFixed(2)
         linha.appendChild(coluna4)
 
         let coluna5 = document.createElement('td')
@@ -236,7 +235,24 @@ async function consultaSql(){
         let coluna6 = document.createElement('td')
         coluna6.innerHTML = investimento.totalInvestido
         linha.appendChild(coluna6)
-    
+
+        let coluna7 = document.createElement('td')
+        coluna7.innerHTML = (investimento.totalInvestido / investimento.quantidade).toFixed(2)
+        linha.appendChild(coluna7)
+
+        let coluna8 = document.createElement('td')
+        let data1 = investimento.dataCompra.split("/")
+        let dataDaCompra = new Date(data1[2],(data1[1]-1),data1[0])
+        let dataAtual = new Date()
+        let diferenca = dataAtual.getTime() - dataDaCompra.getTime()
+        let mes = Math.floor(diferenca/(1000*60*60*24*30))
+        coluna8.innerHTML = mes
+        linha.appendChild(coluna8)
+
+        let coluna9 = document.createElement('td')
+        coluna9.innerHTML = `${((investimento.totalDividendos.toFixed(2)/investimento.totalInvestido) *100).toFixed(2)}%  `
+        linha.appendChild(coluna9)
+   
         tabelaInvestimentos.appendChild(linha)
     
     });

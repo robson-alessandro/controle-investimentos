@@ -78,14 +78,17 @@ button:hover{
     width: auto;
 }
 table{
+    border-collapse: collapse;
     background-color: rgb(253, 254, 255);
     border-radius: 10px;
     padding: 3px;
     width: 100%;
 }
 
-td{
-    border-bottom: 1px solid black;
+td{  
     padding: 2px 5px;
+}
+tbody tr:nth-child(even){
+    background-color: #00000017;
 }
 
